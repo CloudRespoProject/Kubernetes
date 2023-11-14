@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2023-11-11T20:37:16Z"
+  labels:
+    run: pod2
+  name: pod2
+  namespace: ckad
+  resourceVersion: "2851680"
+  uid: f878cd5b-2e7a-46ca-99e1-4bded526b288
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: pod2
+    ports:
+    - containerPort: 80
+      protocol: TCP
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-c6ptz
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: minikube
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: kube-api-access-c6ptz
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2023-11-11T20:37:16Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2023-11-11T20:37:17Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2023-11-11T20:37:17Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2023-11-11T20:37:16Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://eb9d4d3dea35063c39ff9dc2be404ef99171d309ee61a62698c5f96fe17d8b68
+    image: nginx:latest
+    imageID: docker-pullable://nginx@sha256:86e53c4c16a6a276b204b0fd3a8143d86547c967dc8258b3d47c3a21bb68d3c6
+    lastState: {}
+    name: pod2
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2023-11-11T20:37:17Z"
+  hostIP: 192.168.49.2
+  phase: Running
+  podIP: 10.244.1.91
+  podIPs:
+  - ip: 10.244.1.91
+  qosClass: BestEffort
+  startTime: "2023-11-11T20:37:16Z"
